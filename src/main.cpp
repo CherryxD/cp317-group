@@ -114,8 +114,8 @@ vector<Student> loadStudents(string filepath) {
 
 
 int main() {
-    string namePath = "/home/vscode/cp317-group/build/NameFile.txt";
-    string coursePath = "/home/vscode/cp317-group/build/CourseFile.txt";
+    string namePath = "../build/NameFile.txt";
+    string coursePath = "../build/CourseFile.txt";
     string txt;
     vector<Student> students = loadStudents(namePath);
     for (int i = 0; i < students.size() - 1; i++) {
