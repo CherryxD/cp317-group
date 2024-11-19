@@ -24,10 +24,14 @@
 Trenton MacNinch, Michael Lin, and Ying Gao
 \subsection{Change History}
 \subsection{Summary}
+The program is used with the following syntax:
+
+\texttt{calcgrades [name file] [course file] [output file]}
+
 The application reads two input text files and outputs one file with specific formatting.
-The input files are NameFile.txt and CourseFile.txt, formatted as the following:
+The input files are given by the user, formatted as the following:
 \texttt{ \newline
-  NameFile.txt: \newline
+  [name file] \newline
   Student ID, Student Name \newline
   000000001, John Hay \newline
   000000002. Mary Smith \newline
@@ -35,7 +39,7 @@ The input files are NameFile.txt and CourseFile.txt, formatted as the following:
 }
 
 \texttt{ \newline
-  CourseFile.txt: \newline
+  [course file] \newline
   Student ID, Course Code, Test 1, Test 2, Test 3, Final exam \newline
   000000001, CP317, 75.3, 80.4, 60.3, 70.5 \newline
   000000002, CP414, 80.2, 90.5, 50.4, 75.6 \newline
@@ -43,9 +47,9 @@ The input files are NameFile.txt and CourseFile.txt, formatted as the following:
   \ldots
 }
 \newline \newline
-The output file OutputFile.txt is formatted as the following:
+The output file is formatted as the following:
 \texttt{ \newline
-  OutputFile.txt: \newline
+  [output file] \newline
   Student ID, Student Name, Course Code, Final grade \newline
   0000000001, John Hay, CP317, 66.7 \newline
   0000000001, John Hay, CP414, \newline
@@ -65,5 +69,14 @@ The overall system architecture then includes the following;
 
 \section{Detailed Design}
 \subsection{Overview}
-blah
+The application loads all student information into a map, then loads all course information into a vector of custom course objects, and then sorts the vector of course objects.
+
+\subsection{Student Information}
+The program opens the name file as a normal C++ file handle. The program then calls a function that generates a map. This function reads the info from a line in the name file, validates the given information, and adds the student info to the map if the information is acceptable. 
+
+\subsection{Course Information}
+The program opens the course file as a file handle, and uses a function to generate a vector of course objects. The function reads the information from a line in the course file, validates the given course information, and rejects any invalid courses. The program then sorts the vector of course information by student ID to enable a more efficient outputting phase.
+
+\subsection{Creating Output}
+
 \end{document}

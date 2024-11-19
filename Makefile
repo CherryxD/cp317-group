@@ -1,6 +1,6 @@
 clean:
-	rm bin/main
+	rm bin/calcgrades
 build:
-	g++ src/main.cpp -o bin/main -Wall -g
+	g++ src/main.cpp -o bin/calcgrades -Wall -g
 run: build
-	./bin/main bin/CourseFile.txt bin/NameFile.txt bin/OutputFile.txt
+	./bin/calcgrades bin/CourseFile.txt bin/NameFile.txt bin/OutputFile.txt
