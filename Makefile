@@ -1,2 +1,2 @@
 build:
-	g++ src/example.c -o build/example
+	g++ src/main.cpp -o build/main
