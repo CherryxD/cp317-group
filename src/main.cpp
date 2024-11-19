@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <ctype.h>
 #include <string>
 #include <vector>
 using namespace std;
@@ -47,6 +48,21 @@ class Course {
         float test2;
         float test3;
         float exam;
+        int validate() {
+            int status = 0;
+            if (s_id / 100000000 >= 10 || s_id / 100000000 <= 0) {
+                status = 1;
+            }
+            else if (isdigit(code.at(2)) == 0) {
+                cout << code;
+                status = 2;
+            }
+            else if (test1 < 0 || test2 < 0 || test3 < 0 || exam < 0) {
+                cout << test1 << test2 << test3 << exam << "\n";
+                status = 3;
+            }
+            return status;
+        }
     private:
         float calculateFinalGrade(float a, float b, float c, float f) {
             float grade = 0.0;
@@ -54,6 +70,27 @@ class Course {
             return grade;
         }
 };
+
+string errorHandling(int code) {
+    string msg;
+    /* 
+    1 - invalid id;
+    2 - invalid course code;
+    3 - invalid grades;
+    */
+    switch(code) {
+        case 1:
+        msg = "There was an invalid ID loaded";
+        break;
+        case 2:
+        msg = "There was an invalid course code loaded";
+        break;
+        case 3:
+        msg = "There was an invalid grade loaded";
+        break;
+    }
+    return msg;
+}
 
 
 vector<Course> loadCourses(string filepath) {
@@ -68,19 +105,23 @@ vector<Course> loadCourses(string filepath) {
         float t1; float t2; float t3; float f;
         std::strcpy (cstr, txt.c_str());
 
-        char * tok = strtok(cstr, ",");
+        char * tok = strtok(cstr, ", ");
         s_id = atoi(tok);
-        tok = strtok(NULL, ",");
+        tok = strtok(NULL, ", ");
         c_code = tok;
-        tok = strtok(NULL, ",");
+        tok = strtok(NULL, ", ");
         t1 = atof(tok);
-        tok = strtok(NULL, ",");
+        tok = strtok(NULL, ", ");
         t2 = atof(tok);
-        tok = strtok(NULL, ",");
+        tok = strtok(NULL, ", ");
         t3 = atof(tok);
-        tok = strtok(NULL, ",");
+        tok = strtok(NULL, ", ");
         f = atof(tok);
         Course course(t1, t2, t3, f, c_code, s_id);
+        int status = course.validate();
+        if (status != 0) {
+            cout << errorHandling(status) << "\n";
+        }
         //cout << student.id << " " << student.name << "\n";
         courses.push_back(course);
         delete[] cstr;
