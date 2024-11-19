@@ -64,7 +64,7 @@ class Course {
                 status = 2;
             }
             else if (test1 < 0 || test2 < 0 || test3 < 0 || exam < 0) {
-                cout << test1 << test2 << test3 << exam << "\n";
+                cout << test1 << test2 << test3 << exam << endl;
                 status = 3;
             }
             return status;
@@ -104,7 +104,7 @@ vector<Course> loadCourses(string filepath) {
     vector<Course> courses;
     string txt;
     while (getline(courseFile, txt)) {
-        //cout << txt << "\n";
+        //cout << txt << endl;
         char * cstr = new char [txt.length()+1];
         string c_code;
         int s_id;
@@ -126,9 +126,9 @@ vector<Course> loadCourses(string filepath) {
         Course course(t1, t2, t3, f, c_code, s_id);
         int status = course.validate();
         if (status != 0) {
-            cout << errorHandling(status) << "\n";
+            cout << errorHandling(status) << endl;
         }
-        //cout << student.id << " " << student.name << "\n";
+        //cout << student.id << " " << student.name << endl;
         else {
             courses.push_back(course);
         }
@@ -142,7 +142,7 @@ vector<Student> loadStudents(string filepath) {
     string txt;
     vector<Student> students;
     while (getline(nameFile, txt)) {
-        //cout << txt << "\n";
+        //cout << txt << endl;
         char * cstr = new char [txt.length()+1];
         string s_name;
         int id;
@@ -155,9 +155,9 @@ vector<Student> loadStudents(string filepath) {
         Student student(id, s_name);
         int status = student.validate();
         if (status != 0) {
-            cout << errorHandling(status) << "\n";
+            cout << errorHandling(status) << endl;
         }
-        //cout << student.id << " " << student.name << "\n";
+        //cout << student.id << " " << student.name << endl;
         else {
             students.push_back(student);
         }
@@ -174,14 +174,14 @@ int main() {
     string txt;
     vector<Student> students = loadStudents(namePath);
     for (int i = 0; i < students.size() - 1; i++) {
-        cout << students.at(i).id << " " << students.at(i).name << "\n";
+        cout << students.at(i).id << " " << students.at(i).name << endl;
     }
 
     vector<Course> courses = loadCourses(coursePath);
 
 
     for (int i = 0; i < courses.size() - 1; i++) {
-        cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << "\n";
+        cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
     }
 
     return 0;
