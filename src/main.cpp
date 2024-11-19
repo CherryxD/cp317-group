@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <bits/stdc++.h>
 
 using namespace std;
 
@@ -87,6 +88,9 @@ string errorHandling(int code) {
     return msg;
 }
 
+bool compareSID(Course c1, Course c2) {
+    return (c1.s_id < c2.s_id);
+}
 
 vector<Course> loadCourses(string filepath) {
     ifstream courseFile(filepath);
@@ -178,7 +182,7 @@ int main(int argc, char *argv[]) {
     }
 
     vector<Course> courses = loadCourses(coursePath);
-
+    sort(courses.begin(), courses.end(), compareSID);
 
     for (int i = 0; i < courses.size() - 1; i++) {
         cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
