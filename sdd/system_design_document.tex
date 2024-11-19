@@ -47,7 +47,7 @@ The input files are given by the user, formatted as the following:
   \ldots
 }
 \newline \newline
-The output file is formatted as the following:
+The output file is formatted as the following, with special notice given to student IDs being in ascending order:
 \texttt{ \newline
   [output file] \newline
   Student ID, Student Name, Course Code, Final grade \newline
@@ -69,7 +69,7 @@ The overall system architecture then includes the following;
 
 \section{Detailed Design}
 \subsection{Overview}
-The application loads all student information into a map, then loads all course information into a vector of custom course objects, and then sorts the vector of course objects.
+The application loads all student information into a map, then loads all course information into a vector of custom course objects, and then sorts the vector of course objects. The program will then proceed to iterate through all stored course information and attach student names based on IDs while placing it in the designated output file.
 
 \subsection{Student Information}
 The program opens the name file as a normal C++ file handle. The program then calls a function that generates a map. This function reads the info from a line in the name file, validates the given information, and adds the student info to the map if the information is acceptable. 
@@ -78,5 +78,6 @@ The program opens the name file as a normal C++ file handle. The program then ca
 The program opens the course file as a file handle, and uses a function to generate a vector of course objects. The function reads the information from a line in the course file, validates the given course information, and rejects any invalid courses. The program then sorts the vector of course information by student ID to enable a more efficient outputting phase.
 
 \subsection{Creating Output}
+The program takes the information stored in the student id map and the course object vector, and combines it according to the output format while pushing it to the file handle for the output file. The program then closes.
 
 \end{document}
