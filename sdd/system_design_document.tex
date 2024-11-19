@@ -24,11 +24,39 @@
 Trenton MacNinch, Michael Lin, and Ying Gao
 \subsection{Change History}
 \subsection{Summary}
-blah
+The application reads two input text files and outputs one file with specific formatting.
+The input files are NameFile.txt and CourseFile.txt, formatted as the following:
+\texttt{ \newline
+  NameFile.txt: \newline
+  Student ID, Student Name \newline
+  000000001, John Hay \newline
+  000000002. Mary Smith \newline
+  \ldots
+}
+
+\texttt{ \newline
+  CourseFile.txt: \newline
+  Student ID, Course Code, Test 1, Test 2, Test 3, Final exam \newline
+  000000001, CP317, 75.3, 80.4, 60.3, 70.5 \newline
+  000000002, CP414, 80.2, 90.5, 50.4, 75.6 \newline
+  000000001, CP414, 60.5, 70.6, 80.6, 75.6 \newline
+  \ldots
+}
+\newline \newline
+The output file is formatted as the following:
+\texttt{ \newline
+  OutputFile: \newline
+  Student ID, Student Name, Course Code, Final grade \newline
+  0000000001, John Hay, CP317, 66.7 \newline
+  0000000001, John Hay, CP414, \newline
+  0000000002, Mary Smith, CP414, 74.8 \newline
+  \ldots
+}
 
 \section{Software Architecture}
 \subsection{Overview}
-Given the requirements for our application, we have chosen to create a C++ script running on a Linux system. The overall system architecture then includes the following; 
+Given the requirements for our application, we have chosen to create a C++ script running on a Linux system.
+The overall system architecture then includes the following; 
 \begin{itemize}
 \item 2 Input Files
 \item 1 Executable
