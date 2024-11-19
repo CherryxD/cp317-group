@@ -12,6 +12,7 @@ using namespace std;
 
 int validate_id(int id) {
     int status = 0;
+    // Check that student id is strictly 9 digits 
     if (id / 100000000 >= 10 || id / 100000000 <= 0) {
         status = 1;
     }
@@ -45,12 +46,11 @@ class Course {
         float test2;
         float test3;
         float exam;
+
+	// show error number if invalid data is given
         int validate() {
-            int status = 0;
-            if (s_id / 100000000 >= 10 || s_id / 100000000 <= 0) {
-                status = 1;
-            }
-            else if (isdigit(code.at(2)) == 0) {
+	    int status = validate_id(s_id);
+            if (isdigit(code.at(2)) == 0) {
                 cout << code;
                 status = 2;
             }
@@ -68,6 +68,7 @@ class Course {
         }
 };
 
+// Print error depending on error code is given
 string errorHandling(int code) {
     string msg;
     /* 
@@ -89,22 +90,24 @@ string errorHandling(int code) {
     return msg;
 }
 
+// Compare student ids from within course object
 bool compareSID(Course c1, Course c2) {
     return (c1.s_id < c2.s_id);
 }
 
+// Load courses from file
 vector<Course> loadCourses(string filepath) {
     ifstream courseFile(filepath);
     vector<Course> courses;
     string txt;
     while (getline(courseFile, txt)) {
-        //cout << txt << endl;
         char * cstr = new char [txt.length()+1];
         string c_code;
         int s_id;
         float t1; float t2; float t3; float f;
         std::strcpy (cstr, txt.c_str());
 
+	// Extract data from between commas in line of text
         char * tok = strtok(cstr, ", ");
         s_id = atoi(tok);
         tok = strtok(NULL, ", ");
@@ -117,16 +120,19 @@ vector<Course> loadCourses(string filepath) {
         t3 = atof(tok);
         tok = strtok(NULL, ", ");
         f = atof(tok);
+
+	// Load data from line into object
         Course course(t1, t2, t3, f, c_code, s_id);
+
+	// Validate course has correct information
         int status = course.validate();
         if (status != 0) {
             cout << errorHandling(status) << endl;
         }
-        //cout << student.id << " " << student.name << endl;
-        else {
+        else { // If course info is valid, add to list of courses
             courses.push_back(course);
         }
-        delete[] cstr;
+        delete[] cstr; // Remove allocated memory from cstr
     }
     return courses;
 }
@@ -142,19 +148,19 @@ map<int, string> loadStudents(string filepath) {
         int id;
         std::strcpy (cstr, txt.c_str());
 
+	// Extract info from file line
         char * tok = strtok(cstr, ",");
         id = atoi(tok);
         tok = strtok(NULL, ",");
         s_name = tok;
         int status = validate_id(id);
-        if (status != 0) {
+        if (status != 0) { // Print error according to error code
             cout << errorHandling(status) << endl;
         }
-        //cout << student.id << " " << student.name << endl;
-        else {
+        else { // Add student to map if data is valid
 	  students.insert(pair<int, string>(id, s_name));
         }
-        delete[] cstr;
+        delete[] cstr; // Free memory allocated for cstr
     }
     return students;
 }
@@ -165,26 +171,29 @@ int main(int argc, char *argv[]) {
     string outputPath;
     string txt;
 
-    if (argc < 4) {
+    if (argc < 4) { // Verify the user has provided file paths
 	cout << "Please enter a course file, name file, and output file" << endl;
     }
-    else {
+    else { // Get user-given paths
         coursePath = argv[1];
         namePath = argv[2];
 	outputPath = argv[3];
     }
   
 
-    map<int, string> students = loadStudents(namePath);
-    map<int, string>::iterator it;
-    for (it = students.begin(); it != students.end(); ++it) {
+    map<int, string> students = loadStudents(namePath); // Load student ids and names from file
+
+    // Print all student info
+    for (map<int, string>::iterator it = students.begin(); it != students.end(); ++it) { 
       cout << it-> first << it->second << endl;
 
     }
-
+    
+    // Load course information and sort
     vector<Course> courses = loadCourses(coursePath);
     sort(courses.begin(), courses.end(), compareSID);
 
+    // Print all course information
     for (int i = 0; i < courses.size(); i++) {
         cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
     }
