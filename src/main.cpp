@@ -163,9 +163,6 @@ bool compareSID(Course c1, Course c2) {
     return (c1.s_id < c2.s_id);
 }
 
-bool compareID(Student s1, Student s2) {
-    return (s1.id < s2.id);
-}
 
 int main(int argc, char *argv[]) {
     string namePath;
