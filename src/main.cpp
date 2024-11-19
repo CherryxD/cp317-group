@@ -159,11 +159,6 @@ map<int, string> loadStudents(string filepath) {
     return students;
 }
 
-bool compareSID(Course c1, Course c2) {
-    return (c1.s_id < c2.s_id);
-}
-
-
 int main(int argc, char *argv[]) {
     string namePath;
     string coursePath;
