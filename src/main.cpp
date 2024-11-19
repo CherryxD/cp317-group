@@ -3,6 +3,7 @@
 #include <cstring>
 #include <ctype.h>
 #include <string>
+#include <bits/stdc++.h>
 #include <vector>
 #include <map>
 #include <bits/stdc++.h>
@@ -158,7 +159,13 @@ map<int, string> loadStudents(string filepath) {
     return students;
 }
 
+bool compareSID(Course c1, Course c2) {
+    return (c1.s_id < c2.s_id);
+}
 
+bool compareID(Student s1, Student s2) {
+    return (s1.id < s2.id);
+}
 
 int main(int argc, char *argv[]) {
     string namePath;
@@ -175,16 +182,18 @@ int main(int argc, char *argv[]) {
 	outputPath = argv[3];
     }
   
+
     map<int, string> students = loadStudents(namePath);
     map<int, string>::iterator it;
     for (it = students.begin(); it != students.end(); ++it) {
       cout << it-> first << it->second << endl;
+
     }
 
     vector<Course> courses = loadCourses(coursePath);
     sort(courses.begin(), courses.end(), compareSID);
 
-    for (int i = 0; i < courses.size() - 1; i++) {
+    for (int i = 0; i < courses.size(); i++) {
         cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
     }
 
