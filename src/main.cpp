@@ -4,28 +4,17 @@
 #include <ctype.h>
 #include <string>
 #include <vector>
+#include <map>
+
 using namespace std;
 
-class Student {
-    public:
-        Student() {
-            id = 0;
-            name = "";
-        }
-        Student(int a, string b) {
-            id = a;
-            name = b;
-        }
-        int id;
-        string name;
-        int validate() {
-            int status = 0;
-            if (id / 100000000 >= 10 || id / 100000000 <= 0) {
-                status = 1;
-            }
-            return status;
-        }
-};
+int validate_id(int id) {
+    int status = 0;
+    if (id / 100000000 >= 10 || id / 100000000 <= 0) {
+        status = 1;
+    }
+    return status;
+}
 
 class Course {
     public:
@@ -137,10 +126,10 @@ vector<Course> loadCourses(string filepath) {
     return courses;
 }
 
-vector<Student> loadStudents(string filepath) {
+map<int, string> loadStudents(string filepath) {
     ifstream nameFile(filepath);
     string txt;
-    vector<Student> students;
+    map<int, string> students;
     while (getline(nameFile, txt)) {
         //cout << txt << endl;
         char * cstr = new char [txt.length()+1];
@@ -152,14 +141,13 @@ vector<Student> loadStudents(string filepath) {
         id = atoi(tok);
         tok = strtok(NULL, ",");
         s_name = tok;
-        Student student(id, s_name);
-        int status = student.validate();
+        int status = validate_id(id);
         if (status != 0) {
             cout << errorHandling(status) << endl;
         }
         //cout << student.id << " " << student.name << endl;
         else {
-            students.push_back(student);
+	  students.insert(pair<int, string>(id, s_name));
         }
         delete[] cstr;
     }
@@ -183,9 +171,10 @@ int main(int argc, char *argv[]) {
 	outputPath = argv[3];
     }
   
-    vector<Student> students = loadStudents(namePath);
-    for (int i = 0; i < students.size() - 1; i++) {
-        cout << students.at(i).id << " " << students.at(i).name << endl;
+    map<int, string> students = loadStudents(namePath);
+    map<int, string>::iterator it;
+    for (it = students.begin(); it != students.end(); ++it) {
+      cout << it-> first << it->second << endl;
     }
 
     vector<Course> courses = loadCourses(coursePath);
