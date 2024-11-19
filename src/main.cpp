@@ -168,10 +168,21 @@ vector<Student> loadStudents(string filepath) {
 
 
 
-int main() {
-    string namePath = "../build/NameFile.txt";
-    string coursePath = "../build/CourseFile.txt";
+int main(int argc, char *argv[]) {
+    string namePath;
+    string coursePath;
+    string outputPath;
     string txt;
+
+    if (argc < 4) {
+	cout << "Please enter a course file, name file, and output file" << endl;
+    }
+    else {
+        coursePath = argv[1];
+        namePath = argv[2];
+	outputPath = argv[3];
+    }
+  
     vector<Student> students = loadStudents(namePath);
     for (int i = 0; i < students.size() - 1; i++) {
         cout << students.at(i).id << " " << students.at(i).name << endl;

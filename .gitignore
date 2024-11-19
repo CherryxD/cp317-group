@@ -1,4 +1,5 @@
 build/example
 .vscode/
+bin/main
 *~
 *#
