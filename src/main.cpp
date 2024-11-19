@@ -18,7 +18,13 @@ class Student {
         }
         int id;
         string name;
-
+        int validate() {
+            int status = 0;
+            if (id / 100000000 >= 10 || id / 100000000 <= 0) {
+                status = 1;
+            }
+            return status;
+        }
 };
 
 class Course {
@@ -80,7 +86,7 @@ string errorHandling(int code) {
     */
     switch(code) {
         case 1:
-        msg = "There was an invalid ID loaded";
+        msg = "There was an invalid ID loaded ->";
         break;
         case 2:
         msg = "There was an invalid course code loaded";
@@ -123,7 +129,9 @@ vector<Course> loadCourses(string filepath) {
             cout << errorHandling(status) << "\n";
         }
         //cout << student.id << " " << student.name << "\n";
-        courses.push_back(course);
+        else {
+            courses.push_back(course);
+        }
         delete[] cstr;
     }
     return courses;
@@ -145,8 +153,14 @@ vector<Student> loadStudents(string filepath) {
         tok = strtok(NULL, ",");
         s_name = tok;
         Student student(id, s_name);
+        int status = student.validate();
+        if (status != 0) {
+            cout << errorHandling(status) << "\n";
+        }
         //cout << student.id << " " << student.name << "\n";
-        students.push_back(student);
+        else {
+            students.push_back(student);
+        }
         delete[] cstr;
     }
     return students;
