@@ -179,13 +179,12 @@ int main(int argc, char *argv[]) {
 	outputPath = argv[3];
     }
   
-
-    map<int, string> students = loadStudents(namePath); // Load student ids and names from file
+    // Load student ids and names from file
+    map<int, string> students = loadStudents(namePath);
 
     // Print all student info
     for (map<int, string>::iterator it = students.begin(); it != students.end(); ++it) { 
       cout << it-> first << it->second << endl;
-
     }
     
     // Load course information and sort
@@ -196,7 +195,13 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < courses.size(); i++) {
         cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
     }
-
+    
+    for (int i = 0; i < courses.size(); i++) {
+        auto studentID = students.find(courses.at(i).s_id);
+        cout << courses.at(i).s_id << " " << studentID-> second << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
+    }
+    
     return 0;
+
 }
 
