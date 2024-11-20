@@ -202,7 +202,7 @@ int main(int argc, char *argv[]) {
     // Print to output in dicated format
     for (long unsigned int i = 0; i < courses.size(); i++) {
         auto studentID = students.find(courses.at(i).s_id);
-        outfile << courses.at(i).s_id << "," << studentID-> second << ", " << courses.at(i).code << ", " << courses.at(i).avg << endl;
+        outfile << courses.at(i).s_id << "," << studentID-> second << ", " << courses.at(i).code << ", " << fixed << setprecision(1) << courses.at(i).avg << endl;
     }
     outfile.close(); // close output file
     return 0;
