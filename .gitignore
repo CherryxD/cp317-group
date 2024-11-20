@@ -1,6 +1,7 @@
 .vscode/
 bin/main
 bin/calcgrades
+bin/OutputFile.txt
 *~
 *#
 .devcontainer/

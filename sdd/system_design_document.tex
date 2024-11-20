@@ -18,32 +18,29 @@
 \section{Introduction}
 \subsection{Date of Issue}
 \today
-\subsection{Context}
-\subsection{Scope}
 \subsection{Authorship}
 Trenton MacNinch, Michael Lin, and Ying Gao
-\subsection{Change History}
 \subsection{Summary}
 The program is used with the following syntax:
 
 \texttt{calcgrades [name file] [course file] [output file]}
-
+\newline \newline
 The application reads two input text files and outputs one file with specific formatting.
 The input files are given by the user, formatted as the following:
 \texttt{ \newline
   [name file] \newline
   Student ID, Student Name \newline
-  000000001, John Hay \newline
-  000000002. Mary Smith \newline
+  100000001, John Hay \newline
+  100000002. Mary Smith \newline
   \ldots
 }
 
 \texttt{ \newline
   [course file] \newline
   Student ID, Course Code, Test 1, Test 2, Test 3, Final exam \newline
-  000000001, CP317, 75.3, 80.4, 60.3, 70.5 \newline
-  000000002, CP414, 80.2, 90.5, 50.4, 75.6 \newline
-  000000001, CP414, 60.5, 70.6, 80.6, 75.6 \newline
+  100000001, CP317, 75.3, 80.4, 60.3, 70.5 \newline
+  100000002, CP414, 80.2, 90.5, 50.4, 75.6 \newline
+  100000001, CP414, 60.5, 70.6, 80.6, 75.6 \newline
   \ldots
 }
 \newline \newline
@@ -51,15 +48,15 @@ The output file is formatted as the following, with special notice given to stud
 \texttt{ \newline
   [output file] \newline
   Student ID, Student Name, Course Code, Final grade \newline
-  0000000001, John Hay, CP317, 66.7 \newline
-  0000000001, John Hay, CP414, \newline
-  0000000002, Mary Smith, CP414, 74.8 \newline
+  1000000001, John Hay, CP317, 66.7 \newline
+  1000000001, John Hay, CP414, 72.6 \newline
+  1000000002, Mary Smith, CP414, 74.8 \newline
   \ldots
 }
 
 \section{Software Architecture}
 \subsection{Overview}
-Given the requirements for our application, we have chosen to create a C++ script running on a Linux system.
+Given the requirements for our application (Object oriented features, compiled language, file handling, etc.), we have chosen to create a C++ program running on a Linux system.
 The overall system architecture then includes the following; 
 \begin{itemize}
 \item 2 Input Files
@@ -69,7 +66,7 @@ The overall system architecture then includes the following;
 
 \section{Detailed Design}
 \subsection{Overview}
-The application loads all student information into a map, then loads all course information into a vector of custom course objects, and then sorts the vector of course objects. The program will then proceed to iterate through all stored course information and attach student names based on IDs while placing it in the designated output file.
+The application loads all student information into a map, then loads all course information into a vector of custom course objects, and then sorts the vector of course objects. The program will then proceed to iterate through all stored course information and attach student names based on IDs while placing it in the designated output file. If the program encounters an error, it will print the encountered error.
 
 \subsection{Student Information}
 The program opens the name file as a normal C++ file handle. The program then calls a function that generates a map. This function reads the info from a line in the name file, validates the given information, and adds the student info to the map if the information is acceptable. 
