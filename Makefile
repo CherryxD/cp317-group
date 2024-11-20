@@ -1,5 +1,5 @@
 clean:
-	rm bin/calcgrades
+	rm bin/calcgrades bin/OutputFile.txt
 build:
 	g++ src/main.cpp -o bin/calcgrades -Wall -g
 run: build

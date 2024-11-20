@@ -133,6 +133,7 @@ vector<Course> loadCourses(string filepath) {
         }
         delete[] cstr; // Remove allocated memory from cstr
     }
+    courseFile.close(); // close courseFile
     return courses;
 }
 
@@ -147,7 +148,7 @@ map<int, string> loadStudents(string filepath) {
         int id;
         std::strcpy (cstr, txt.c_str());
 
-	// Extract info from file line
+	    // Extract info from file line
         char * tok = strtok(cstr, ",");
         id = atoi(tok);
         tok = strtok(NULL, ",");
@@ -157,10 +158,11 @@ map<int, string> loadStudents(string filepath) {
             cout << errorHandling(status) << endl;
         }
         else { // Add student to map if data is valid
-	  students.insert(pair<int, string>(id, s_name));
+	        students.insert(pair<int, string>(id, s_name));
         }
         delete[] cstr; // Free memory allocated for cstr
     }
+    nameFile.close();
     return students;
 }
 
@@ -178,25 +180,31 @@ int main(int argc, char *argv[]) {
         namePath = argv[2];
 	outputPath = argv[3];
     }
+    ofstream outfile; // create header for output file
+    outfile.open(outputPath); // link to output file 
   
+    // Load student ids and names from file
+    map<int, string> students = loadStudents(namePath);
 
-    map<int, string> students = loadStudents(namePath); // Load student ids and names from file
-
-    // Print all student info
-    for (map<int, string>::iterator it = students.begin(); it != students.end(); ++it) { 
-      cout << it-> first << it->second << endl;
-
-    }
-    
     // Load course information and sort
     vector<Course> courses = loadCourses(coursePath);
     sort(courses.begin(), courses.end(), compareSID);
-
+    /*
+    // Print all student info
+    for (map<int, string>::iterator it = students.begin(); it != students.end(); ++it) { 
+      cout << it-> first << it->second << endl;
+    }
     // Print all course information
     for (int i = 0; i < courses.size(); i++) {
         cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
     }
-
+    */
+    // Print to output in dicated format
+    for (long unsigned int i = 0; i < courses.size(); i++) {
+        auto studentID = students.find(courses.at(i).s_id);
+        outfile << courses.at(i).s_id << "," << studentID-> second << ", " << courses.at(i).code << ", " << courses.at(i).avg << endl;
+    }
+    outfile.close(); // close output file
     return 0;
 }
 
