@@ -13,6 +13,7 @@ int validate_id(int id) {
     int status = 0;
     // Check that student id is strictly 9 digits 
     if (id / 100000000 >= 10 || id / 100000000 <= 0) {
+        cout << "Student ID: " << id << endl;
         status = 1;
     }
     return status;
@@ -20,7 +21,7 @@ int validate_id(int id) {
 
 class Course {
     public:
-        Course() {
+        Course() { // default constructor if any null values are attempted to be loaded;
             test1 = 0.0;
             test2 = 0.0;
             test3 = 0.0;
@@ -41,25 +42,26 @@ class Course {
         float avg;
         string code;
         int s_id;
-        float test1;
-        float test2;
-        float test3;
-        float exam;
-
 	// show error number if invalid data is given
         int validate() {
 	    int status = validate_id(s_id);
             if (isdigit(code.at(2)) == 0) {
-                cout << code;
+                // print erroneous course code
+                cout << "Course Code was: " << code << endl;
                 status = 2;
             }
             else if (test1 < 0 || test2 < 0 || test3 < 0 || exam < 0) {
-                cout << test1 << test2 << test3 << exam << endl;
+                // print possibly erroneous grades
+                cout << "Marks: Test 1 " << test1 << ", Test 2 " << test2 << ", Test 3" << test3 << ", Final Exam " << exam << endl;
                 status = 3;
             }
             return status;
         }
     private:
+        float test1;
+        float test2;
+        float test3;
+        float exam;
         float calculateFinalGrade(float a, float b, float c, float f) {
             float grade = 0.0;
             grade = (a * 0.2) + (b * 0.2) + (c * 0.2) + (f * 0.4);
@@ -77,7 +79,7 @@ string errorHandling(int code) {
     */
     switch(code) {
         case 1:
-        msg = "There was an invalid ID loaded ->";
+        msg = "There was an invalid ID loaded";
         break;
         case 2:
         msg = "There was an invalid course code loaded";
@@ -104,7 +106,7 @@ vector<Course> loadCourses(string filepath) {
         string c_code;
         int s_id;
         float t1; float t2; float t3; float f;
-        std::strcpy (cstr, txt.c_str());
+        strcpy (cstr, txt.c_str());
 
 	// Extract data from between commas in line of text
         char * tok = strtok(cstr, ", ");
