@@ -77,4 +77,7 @@ The program opens the course file as a file handle, and uses a function to gener
 \subsection{Creating Output}
 The program takes the information stored in the student id map and the course object vector, and combines it according to the output format while pushing it to the file handle for the output file. The program then closes.
 
+\subsection{Error Handling}
+Given all errors are likely to be from erroneous inputs (invalid id, course code, grades), the program validates all inputs to ensure only valid inputs are taken. The program will continue to run after printing an error message to console indicating what the error was. Due to the possibility of bonus marks/grades, only negative grades are detected as invalid. Additionally, all student names are treated as valid.
+
 \end{document}
