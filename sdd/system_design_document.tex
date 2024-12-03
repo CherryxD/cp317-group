@@ -15,28 +15,21 @@
 \tableofcontents
 \newpage
 
-\section{Change History}
-\begin{itemize}
-\item Nov 14, Added subsections to Introduction
-\item Nov 14, Made date of issue use system current date
-\item Nov 19, Added text to Software Architecture Overview
-\item Nov 19, Itemized list in Software Architecture Overview
-\item Nov 19, Added example formatting for input and output
-\item Nov 19, Added .txt to output file filename
-\item Nov 19, Added command usage and added sections to Detailed Design
-\item Nov 19, Elaborated upon information and added text to Creating Output subsection
-\item Nov 20, Changed input/output file formatting section to stress sorted IDs in output file
-\item Nov 22, Added subsection Error Handling
-\item Nov 22, Added change history
-\end{itemize}
-
 \section{Introduction}
 \subsection{Date of Issue}
 \today
 \subsection{Authorship}
 Trenton MacNinch, Michael Lin, and Ying Gao
 \subsection{Summary}
-The program is used with the following syntax:
+The system architecture will be a monolithic design running on Linux, with interfaces for reading from the provided input files, and to write to the output file.
+
+\section{Software Architecture}
+\subsection{Overview}
+Given the requirements for our application (Object oriented features, compiled language, file handling, etc.), we have chosen to create a C++ program running on a Linux system. Thus, a monolithic architecture is used, placing all functionality within the single executable.
+\subsection{System Design Concerns}
+A monolithic design is chosen as it is the simplest design to solve the given problem. As the scope is not large, there are few concerns about scalability and constant usage. The lack of data transfer between programs can be ignored as all data handling can be safely handled within the single program.
+\subsection{Usage Case View}
+The program is used by calling a command with the following syntax:
 
 \texttt{calcgrades [name file] [course file] [output file]}
 \newline \newline
@@ -68,31 +61,46 @@ The output file is formatted as the following, with special notice given to stud
   1000000002, Mary Smith, CP414, 74.8 \newline
   \ldots
 }
-
-\section{Software Architecture}
-\subsection{Overview}
-Given the requirements for our application (Object oriented features, compiled language, file handling, etc.), we have chosen to create a C++ program running on a Linux system.
-The overall system architecture then includes the following; 
-\begin{itemize}
-\item 2 Input Files
-\item 1 Executable
-\item 1 Output File
-\end{itemize}
+\subsection{Component View}
+As this is a monolithic design, there are no components on the high-level design level to view. Deeper components will be documented in the Detailed Design section of the document.
 
 \section{Detailed Design}
 \subsection{Overview}
 The application loads all student information into a map, then loads all course information into a vector of custom course objects, and then sorts the vector of course objects. The program will then proceed to iterate through all stored course information and attach student names based on IDs while placing it in the designated output file. If the program encounters an error, it will print the encountered error.
 
 \subsection{Student Information}
-The program opens the name file as a normal C++ file handle. The program then calls a function that generates a map. This function reads the info from a line in the name file, validates the given information, and adds the student info to the map if the information is acceptable. 
+The program opens the name file as a normal C++ file handle. The program then calls a function that generates a map. This function reads the info from a line in the name file, validates the given information, and adds the student info to the map if the information is acceptable. Within this map, the Student Information is stored with the Student ID as an integer and the Student Name as a C++ string.
 
 \subsection{Course Information}
-The program opens the course file as a file handle, and uses a function to generate a vector of course objects. The function reads the information from a line in the course file, validates the given course information, and rejects any invalid courses. The program then sorts the vector of course information by student ID to enable a more efficient outputting phase.
+The program opens the course file as a file handle, and uses a function to generate a vector of Course objects. Each Course object consists of a Student ID stored as an integer, a Course Code stored as a C++ string, and all grades stored as floats. The function reads the information from a line in the course file, validates the given course information, and rejects any invalid courses. The program then sorts the vector of course information by student ID to enable a more efficient outputting phase.
 
 \subsection{Creating Output}
-The program takes the information stored in the student id map and the course object vector, and combines it according to the output format while pushing it to the file handle for the output file. The program then closes.
+The program takes the information stored in the student id map and the course object vector, and combines it according to the output format while pushing it to the file handle for the output file. This output is printed in the following format, Student ID as an integer, Student Name as a C++ string, Course Code as a C++ string, and Final Grade as a float truncated to one decimal point (nn.n). The program then closes.
 
 \subsection{Error Handling}
-Given all errors are likely to be from erroneous inputs (invalid id, course code, grades), the program validates all inputs to ensure only valid inputs are taken. The program will continue to run after printing an error message to console indicating what the error was. Due to the possibility of bonus marks/grades, only negative grades are detected as invalid. Additionally, all student names are treated as valid.
+Anytime a new entry is read an about to be added to the data structures, is it first parsed through a validator check. This check first confirms the the given Student ID is a valid nine digit number, then if object being validated is a Student, the Student Name is automatically assumed to be valid (who knows what parents are naming their children nowadays, and yes the input is sanitized). In the case of Course Information, a check is conducted to ensure that the Course Code is a valid (following the XXnnn format), and that all grades are positive (we are assuming that bonus marks are possbile). If any of these checks are invalid, the error handling code will print the first invalid input, stating both the invalidity type, and what was invalid.
+
+\section{Glossary}
+\begin{itemize}
+\item CourseFile.txt - Provided input file of all Course information, including Student IDs, Course Codes, and all Grades.
+\item NameFile.txt - Provided input file of all Student information, including Student IDs, and Student Names.
+\item OutputFile.txt - Generated output file in desired formatting, including Student IDs, Student Names, Course Codes, and Final Grades.
+\end{itemize}
+
+\section{Change History}
+\begin{itemize}
+\item Nov 14, Added subsections to Introduction
+\item Nov 14, Made date of issue use system current date
+\item Nov 19, Added text to Software Architecture Overview
+\item Nov 19, Itemized list in Software Architecture Overview
+\item Nov 19, Added example formatting for input and output
+\item Nov 19, Added .txt to output file filename
+\item Nov 19, Added command usage and added sections to Detailed Design
+\item Nov 19, Elaborated upon information and added text to Creating Output subsection
+\item Nov 20, Changed input/output file formatting section to stress sorted IDs in output file
+\item Nov 22, Added subsection Error Handling
+\item Nov 22, Added change history
+\item Dec 3, Re-organized contents, added addtional information to Software Architecture and Detailed Design
+\end{itemize}
 
 \end{document}
