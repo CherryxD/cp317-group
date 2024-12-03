@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
     else { // Get user-given paths
         coursePath = argv[1];
         namePath = argv[2];
-	outputPath = argv[3];
+	    outputPath = argv[3];
     }
     ofstream outfile; // create header for output file
     outfile.open(outputPath); // link to output file 
