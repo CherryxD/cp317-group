@@ -30,7 +30,7 @@ class Course {
             s_id = 0;
             avg = 0.0;
         }
-        Course(float x, float y, float z, float f, string c, int i) {
+        Course(float x, float y, float z, float f, string c, int i) { // actual constructor
             test1 = x;
             test2 = y;
             test3 = z;
@@ -58,6 +58,7 @@ class Course {
             return status;
         }
     private:
+        // these don't need to be interacted with once loaded
         float test1;
         float test2;
         float test3;
@@ -106,6 +107,7 @@ vector<Course> loadCourses(string filepath) {
         string c_code;
         int s_id;
         float t1; float t2; float t3; float f;
+        // convert C++ string to C string
         strcpy (cstr, txt.c_str());
 
 	// Extract data from between commas in line of text
