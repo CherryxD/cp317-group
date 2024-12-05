@@ -62,7 +62,12 @@ class Course {
 	// show error number if invalid data is given
         int validate() {
 	    int status = validate_id(s_id);
-            if (isdigit(code.at(2)) == 0) {
+            if (code.size() != 5) {
+                // print erroneous course code
+                cout << "Course Code was: " << code << endl;
+                status = 2;
+            }
+            else if (isdigit(code.at(0)) == 1 || isdigit(code.at(1)) == 1 || isdigit(code.at(2)) == 0 || isdigit(code.at(3)) == 0 || isdigit(code.at(4)) == 0) {
                 // print erroneous course code
                 cout << "Course Code was: " << code << endl;
                 status = 2;
@@ -213,12 +218,12 @@ int main(int argc, char *argv[]) {
     // Load course information and sort
     vector<Course> courses = loadCourses(coursePath);
     sort(courses.begin(), courses.end(), compareSID);
-
+    /*
     // Print all student info
     for (map<int, string>::iterator it = students.begin(); it != students.end(); ++it) { 
       cout << it->first << " " << it->second << endl;
     }
-    /*
+
     // Print all course information
     for (int i = 0; i < courses.size(); i++) {
         cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
