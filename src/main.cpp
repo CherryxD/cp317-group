@@ -1,7 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <cstring>
-#include <ctype.h>
 #include <string>
 #include <bits/stdc++.h>
 #include <vector>
@@ -9,6 +7,7 @@
 
 using namespace std;
 
+// id validator
 int validate_id(int id) {
     int status = 0;
     // Check that student id is strictly 9 digits 
@@ -67,14 +66,16 @@ class Course {
                 cout << "Course Code was: " << code << endl;
                 status = 2;
             }
-            else if (isdigit(code.at(0)) == 1 || isdigit(code.at(1)) == 1 || isdigit(code.at(2)) == 0 || isdigit(code.at(3)) == 0 || isdigit(code.at(4)) == 0) {
+            else if (isdigit(code.at(0)) == 1 || isdigit(code.at(1)) == 1 || isdigit(code.at(2)) == 0 
+            || isdigit(code.at(3)) == 0 || isdigit(code.at(4)) == 0) {
                 // print erroneous course code
                 cout << "Course Code was: " << code << endl;
                 status = 2;
             }
             else if (test1 < 0 || test2 < 0 || test3 < 0 || exam < 0) {
                 // print possibly erroneous grades
-                cout << "Marks: Test 1 " << test1 << ", Test 2 " << test2 << ", Test 3" << test3 << ", Final Exam " << exam << endl;
+                cout << "Marks: Test 1 " << test1 << ", Test 2 " << test2 
+                << ", Test 3" << test3 << ", Final Exam " << exam << endl;
                 status = 3;
             }
             return status;
@@ -100,6 +101,7 @@ string errorHandling(int code) {
     2 - invalid course code;
     3 - invalid grades;
     4 - invalid name;
+    5 - invalid number of inputs;
     */
     switch(code) {
         case 1:
@@ -132,12 +134,12 @@ vector<Course> loadCourses(string filepath) {
     vector<Course> courses;
     string txt;
     while (getline(courseFile, txt)) {
-        int status;
-        string c_code;
-        int s_id;
-        float t1; float t2; float t3; float f;
+        int status; // error code
+        string c_code; // course code
+        int s_id; // student id
+        float t1; float t2; float t3; float f; // test scores
         vector<string> tokens = split(txt, ", ");
-        if (tokens.size() == 6) {
+        if (tokens.size() == 6) { // ensures the right number of values are input
             s_id = stoi(tokens.at(0));
             c_code = tokens.at(1);
             t1 = stof(tokens.at(2));
@@ -170,11 +172,10 @@ map<int, string> loadStudents(string filepath) {
     string txt;
     map<int, string> students;
     while (getline(nameFile, txt)) {
-        //cout << txt << endl;
-        string s_name;
-        int id;
+        string s_name; // student name
+        int id; // student id
         vector<string> tokens = split(txt, ", ");
-        if (tokens.size() == 2) {
+        if (tokens.size() == 2) { // ensure valid number of inputs
             id = stoi(tokens.at(0));
             s_name = tokens.at(1);
             int status = validate_id(id);
@@ -236,7 +237,8 @@ int main(int argc, char *argv[]) {
             cout << "There was no Student associated with the ID: " << courses.at(i).s_id << endl;
         }
         else {
-            outfile << courses.at(i).s_id << ", " << studentID->second << ", " << courses.at(i).code << ", " << fixed << setprecision(1) << courses.at(i).avg << endl;
+            outfile << courses.at(i).s_id << ", " << studentID->second << ", " << courses.at(i).code 
+            << ", " << fixed << setprecision(1) << courses.at(i).avg << endl;
         }
         
     }
