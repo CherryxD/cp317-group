@@ -100,8 +100,7 @@ string errorHandling(int code) {
     1 - invalid id;
     2 - invalid course code;
     3 - invalid grades;
-    4 - invalid name;
-    5 - invalid number of inputs;
+    4 - invalid number of inputs;
     */
     switch(code) {
         case 1:
@@ -114,9 +113,6 @@ string errorHandling(int code) {
         msg = "There was an invalid grade loaded";
         break;
         case 4:
-        msg = "There was an invalid student name loaded";
-        break;
-        case 5:
         msg = "There was an invalid number of inputs loaded";
         break;
     }
@@ -160,7 +156,7 @@ vector<Course> loadCourses(string filepath) {
         else {
             // print error about invalid number of inputs
             cout << tokens.size() << " inputs were loaded, expected 6" << endl;
-            cout << errorHandling(5) << endl;
+            cout << errorHandling(4) << endl;
         }
     }
     courseFile.close(); // close courseFile
@@ -189,7 +185,7 @@ map<int, string> loadStudents(string filepath) {
         else {
             // print error about invalid number of inputs
             cout << tokens.size() << " inputs were loaded, expected 2" << endl;
-            cout << errorHandling(5) << endl;
+            cout << errorHandling(4) << endl;
         }
     }
     nameFile.close();
