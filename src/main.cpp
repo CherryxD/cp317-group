@@ -19,6 +19,23 @@ int validate_id(int id) {
     return status;
 }
 
+// string tokenizer
+vector<string> split(string s, string delimiter) {
+    vector<string> tokens;
+    size_t pos = 0;
+    string token;
+    while ((pos = s.find(delimiter)) != string::npos) {
+        if (pos != 0) {
+            token = s.substr(0, pos);
+            tokens.push_back(token);
+        }
+        s.erase(0, (pos + delimiter.length()));
+    }
+    tokens.push_back(s);
+
+    return tokens;
+}
+
 class Course {
     public:
         Course() { // default constructor if any null values are attempted to be loaded;
@@ -77,6 +94,7 @@ string errorHandling(int code) {
     1 - invalid id;
     2 - invalid course code;
     3 - invalid grades;
+    4 - invalid name;
     */
     switch(code) {
         case 1:
@@ -87,6 +105,12 @@ string errorHandling(int code) {
         break;
         case 3:
         msg = "There was an invalid grade loaded";
+        break;
+        case 4:
+        msg = "There was an invalid student name loaded";
+        break;
+        case 5:
+        msg = "There was an invalid number of inputs loaded";
         break;
     }
     return msg;
@@ -103,39 +127,34 @@ vector<Course> loadCourses(string filepath) {
     vector<Course> courses;
     string txt;
     while (getline(courseFile, txt)) {
-        char * cstr = new char [txt.length()+1];
+        int status;
         string c_code;
         int s_id;
         float t1; float t2; float t3; float f;
-        // convert C++ string to C string
-        strcpy (cstr, txt.c_str());
-
-	// Extract data from between commas in line of text
-        char * tok = strtok(cstr, ", ");
-        s_id = atoi(tok);
-        tok = strtok(NULL, ", ");
-        c_code = tok;
-        tok = strtok(NULL, ", ");
-        t1 = atof(tok);
-        tok = strtok(NULL, ", ");
-        t2 = atof(tok);
-        tok = strtok(NULL, ", ");
-        t3 = atof(tok);
-        tok = strtok(NULL, ", ");
-        f = atof(tok);
-
-	// Load data from line into object
-        Course course(t1, t2, t3, f, c_code, s_id);
-
-	// Validate course has correct information
-        int status = course.validate();
-        if (status != 0) {
-            cout << errorHandling(status) << endl;
+        vector<string> tokens = split(txt, ", ");
+        if (tokens.size() == 6) {
+            s_id = stoi(tokens.at(0));
+            c_code = tokens.at(1);
+            t1 = stof(tokens.at(2));
+            t2 = stof(tokens.at(3));
+            t3 = stof(tokens.at(4));
+            f = stof(tokens.at(5));
+            // Load data from line into object
+            Course course(t1, t2, t3, f, c_code, s_id);
+            // Validate course has correct information
+            status = course.validate();
+            if (status != 0) {
+                cout << errorHandling(status) << endl;
+            }
+            else { // If course info is valid, add to list of courses
+                courses.push_back(course);
+            }
         }
-        else { // If course info is valid, add to list of courses
-            courses.push_back(course);
+        else {
+            // print error about invalid number of inputs
+            cout << tokens.size() << " inputs were loaded, expected 6" << endl;
+            cout << errorHandling(5) << endl;
         }
-        delete[] cstr; // Remove allocated memory from cstr
     }
     courseFile.close(); // close courseFile
     return courses;
@@ -147,24 +166,25 @@ map<int, string> loadStudents(string filepath) {
     map<int, string> students;
     while (getline(nameFile, txt)) {
         //cout << txt << endl;
-        char * cstr = new char [txt.length()+1];
         string s_name;
         int id;
-        std::strcpy (cstr, txt.c_str());
-
-	    // Extract info from file line
-        char * tok = strtok(cstr, ",");
-        id = atoi(tok);
-        tok = strtok(NULL, ",");
-        s_name = tok;
-        int status = validate_id(id);
-        if (status != 0) { // Print error according to error code
-            cout << errorHandling(status) << endl;
+        vector<string> tokens = split(txt, ", ");
+        if (tokens.size() == 2) {
+            id = stoi(tokens.at(0));
+            s_name = tokens.at(1);
+            int status = validate_id(id);
+            if (status != 0) { // Print error according to error code
+                cout << errorHandling(status) << endl;
+            }
+            else { // Add student to map if data is valid
+                students.insert(pair<int, string>(id, s_name));
+            }
         }
-        else { // Add student to map if data is valid
-	        students.insert(pair<int, string>(id, s_name));
+        else {
+            // print error about invalid number of inputs
+            cout << tokens.size() << " inputs were loaded, expected 2" << endl;
+            cout << errorHandling(5) << endl;
         }
-        delete[] cstr; // Free memory allocated for cstr
     }
     nameFile.close();
     return students;
@@ -193,11 +213,12 @@ int main(int argc, char *argv[]) {
     // Load course information and sort
     vector<Course> courses = loadCourses(coursePath);
     sort(courses.begin(), courses.end(), compareSID);
-    /*
+
     // Print all student info
     for (map<int, string>::iterator it = students.begin(); it != students.end(); ++it) { 
-      cout << it-> first << it->second << endl;
+      cout << it->first << " " << it->second << endl;
     }
+    /*
     // Print all course information
     for (int i = 0; i < courses.size(); i++) {
         cout << courses.at(i).s_id << " " << courses.at(i).code << " " << courses.at(i).avg << endl;
@@ -206,7 +227,7 @@ int main(int argc, char *argv[]) {
     // Print to output in dicated format
     for (long unsigned int i = 0; i < courses.size(); i++) {
         auto studentID = students.find(courses.at(i).s_id);
-        outfile << courses.at(i).s_id << "," << studentID-> second << ", " << courses.at(i).code << ", " << fixed << setprecision(1) << courses.at(i).avg << endl;
+        outfile << courses.at(i).s_id << ", " << studentID->second << ", " << courses.at(i).code << ", " << fixed << setprecision(1) << courses.at(i).avg << endl;
     }
     outfile.close(); // close output file
     return 0;
